@@ -1,10 +1,12 @@
 package main
 
 import (
+	"honyakutter/resources"
+
 	"github.com/aws/aws-cdk-go/awscdk/v2"
+
 	// "github.com/aws/aws-cdk-go/awscdk/v2/awssqs"
 	"github.com/aws/constructs-go/constructs/v10"
-	// "github.com/aws/jsii-runtime-go"
 )
 
 type HonyakutterStackProps struct {
@@ -19,6 +21,7 @@ func NewHonyakutterStack(scope constructs.Construct, id string, props *Honyakutt
 	stack := awscdk.NewStack(scope, &id, &sprops)
 
 	// The code that defines your stack goes here
+	resources.TweetLambdaFunction(stack)
 
 	// example resource
 	// queue := awssqs.NewQueue(stack, jsii.String("HonyakutterQueue"), &awssqs.QueueProps{

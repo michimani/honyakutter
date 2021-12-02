@@ -1,14 +1,83 @@
-# Welcome to your CDK Go project!
+honyakutter
+===
 
-This is a blank project for Go development with CDK.
+This is an application that translates text entered in Japanese into English and tweets it, defined using AWS CDK v2 (golang) and using AWS Step Functions to connect the translation and tweeting processes.
 
-**NOTICE**: Go support is still in Developer Preview. This implies that APIs may
-change while we address early feedback from the community. We would love to hear
-about your experience through GitHub issues.
+# Preparation
 
-## Useful commands
+1. Check your AWS CDK version.
 
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk synth`       emits the synthesized CloudFormation template
- * `go test`         run unit tests
+    ```bash
+    cdk --version
+    ```
+    
+    If you have not installed it, please use the following command to install it.
+    
+    ```bash
+    npm install -g aws-cdk
+    ```
+
+    This application is intended for use with AWS CDK `v2.0.0` or higher.
+
+2. Getting Twitter API's some tokens.
+
+    ⚠️You will need the Twitter API key and secret, as well as the access token and access token secret. Please create an app on the Twitter Developer page and obtain each token.
+
+1. Create `.env` file.
+
+    ```bash
+    cp .env.sample .env
+    ```
+
+    And, replace values of each environment variables.
+
+2. Load environment variables.
+
+    ```bash
+    source .env
+    ```
+
+# Build
+
+1. Build Lambda Function (that tweet a text)
+
+    ```bash
+    cd cd resources/lambda_functions/tweet \
+    && GOARCH=amd64 GOOS=linux go build -o bin/main
+    ```
+
+# Deploying
+
+1. bootstrap 
+
+    ```bash
+    cdk bootstrap
+    ```
+    
+2. Generate CFn template
+
+    ```bash
+    cdk synth
+    ```
+
+3. deploy
+
+    ```bash
+    cdk deploy
+    ```
+
+
+# Testing
+
+```bash
+go test .
+```
+
+# Licence
+
+[MIT](https://github.com/michimani/gotwi/blob/main/LICENCE)
+
+# Author
+
+[michimani210](https://twitter.com/michimani210)
+

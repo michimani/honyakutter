@@ -17,3 +17,12 @@
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+
+# Lambda Function binary
+lambda/*/bin
+
+# Environment values
+.env
+
+# Lambda Function invoke test
+out
