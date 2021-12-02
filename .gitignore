@@ -19,7 +19,7 @@
 cdk.out
 
 # Lambda Function binary
-lambda/*/bin
+resources/lambda_functions/tweet/bin
 
 # Environment values
 .env
