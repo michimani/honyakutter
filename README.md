@@ -3,6 +3,11 @@ honyakutter
 
 This is an application that translates text entered in Japanese into English and tweets it, defined using AWS CDK v2 (golang) and using AWS Step Functions to connect the translation and tweeting processes.
 
+# TODO
+
+- [ ]: Create a Lambda function to translate Japanese into English.
+- [ ]: Create a Step Functions state machine that connects the translation and tweeting Lambda functions.
+
 # Preparation
 
 1. Check your AWS CDK version.
@@ -21,7 +26,7 @@ This is an application that translates text entered in Japanese into English and
 
 2. Getting Twitter API's some tokens.
 
-    ⚠️You will need the Twitter API key and secret, as well as the access token and access token secret. Please create an app on the Twitter Developer page and obtain each token.
+    ⚠️ You will need the Twitter API key and secret, as well as the access token and access token secret. Please create an app on the Twitter Developer page and obtain each token.
 
 1. Create `.env` file.
 
@@ -72,6 +77,21 @@ This is an application that translates text entered in Japanese into English and
 ```bash
 go test .
 ```
+
+# Manual execution of Lambda functions
+
+1. Tweet Lambda Function
+
+    Using AWS CLI. (The latest versions at the time of this writing are `v2.4.4` and `1.22.18`.)
+
+    ```bash
+    aws lambda invoke \
+    --function-name tweet-function \
+    --invocation-type Event \
+    --region ap-northeast-1 \
+    --payload fileb://testdata/lambda_payload.json \
+    out
+    ```
 
 # Licence
 
