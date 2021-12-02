@@ -42,7 +42,7 @@ This is an application that translates text entered in Japanese into English and
 1. Build Lambda Function (that tweet a text)
 
     ```bash
-    cd cd resources/lambda_functions/tweet \
+    cd resources/lambda_functions/tweet \
     && GOARCH=amd64 GOOS=linux go build -o bin/main
     ```
 
