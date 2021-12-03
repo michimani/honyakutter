@@ -18,8 +18,8 @@ const (
 )
 
 var (
-	memory  float64 = 128
-	timeout float64 = 60 * 1000 // 30 sec
+	memory                float64 = 128
+	lambdaFunctionTimeout float64 = 60 * 1000 // 60 sec
 )
 
 func TweetLambdaFunction(stack constructs.Construct) awslambda.Function {
@@ -30,7 +30,7 @@ func TweetLambdaFunction(stack constructs.Construct) awslambda.Function {
 		Handler:      jsii.String("main"),
 		Code:         awslambda.AssetCode_FromAsset(jsii.String("./resources/lambda_functions/tweet/bin"), nil),
 		MemorySize:   &memory,
-		Timeout:      awscdk.Duration_Millis(&timeout),
+		Timeout:      awscdk.Duration_Millis(&lambdaFunctionTimeout),
 		Environment: &map[string]*string{
 			"GOTWI_API_KEY":             jsii.String(os.Getenv(EnvKeyOfTwitterAPIKey)),
 			"GOTWI_API_KEY_SECRET":      jsii.String(os.Getenv(EnvKeyOfTwitterAPIKeySecret)),
@@ -48,7 +48,7 @@ func TranslateLambdaFunction(stack constructs.Construct) awslambda.Function {
 		Handler:      jsii.String("main"),
 		Code:         awslambda.AssetCode_FromAsset(jsii.String("./resources/lambda_functions/translate/bin"), nil),
 		MemorySize:   &memory,
-		Timeout:      awscdk.Duration_Millis(&timeout),
+		Timeout:      awscdk.Duration_Millis(&lambdaFunctionTimeout),
 	})
 
 	lambdaFn.AddToRolePolicy(awsiam.NewPolicyStatement(&awsiam.PolicyStatementProps{
