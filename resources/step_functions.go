@@ -14,29 +14,50 @@ var (
 	taskTimeout         float64 = 60 * 1000  // 60 sec
 )
 
+type resultSelectorItem struct {
+	Key   string
+	Value interface{}
+}
+
 func TranslateTweetStateMaschine(stack constructs.Construct, translateFunc, tweetFunc awslambda.Function) {
-	chain := awsstepfunctions.NewPass(stack, jsii.String("init"), &awsstepfunctions.PassProps{
+	initSt := awsstepfunctions.NewPass(stack, jsii.String("init"), &awsstepfunctions.PassProps{
 		Comment: jsii.String("init state"),
 	})
 
 	// Translate state
-	chain.Next(lambdaFunctionToTask(stack, translateFunc))
+	translateResultSelector := []resultSelectorItem{
+		{Key: "inputText.$", Value: "$.Payload"},
+	}
+	translatSt := lambdaFunctionToTask(stack, translateFunc, translateResultSelector...)
+
+	// Tweet state
+	tweetSt := lambdaFunctionToTask(stack, tweetFunc)
+
+	definition := initSt.Next(translatSt).Next(tweetSt)
 
 	awsstepfunctions.NewStateMachine(stack, jsii.String("TranslateTweetStateMaschine"), &awsstepfunctions.StateMachineProps{
 		StateMachineName: jsii.String("translate-tweet-state-maschine"),
 		StateMachineType: awsstepfunctions.StateMachineType_EXPRESS,
 		Timeout:          awscdk.Duration_Millis(&stateMachineTimeout),
-		Definition:       chain,
+		Definition:       definition,
 	})
 }
 
-func lambdaFunctionToTask(stack constructs.Construct, lfn awslambda.Function) awsstepfunctionstasks.LambdaInvoke {
-	return awsstepfunctionstasks.NewLambdaInvoke(stack, lfn.FunctionName(), &awsstepfunctionstasks.LambdaInvokeProps{
+func lambdaFunctionToTask(stack constructs.Construct, lfn awslambda.Function, resultSelectors ...resultSelectorItem) awsstepfunctionstasks.LambdaInvoke {
+	props := awsstepfunctionstasks.LambdaInvokeProps{
 		LambdaFunction: lfn,
 		InvocationType: awsstepfunctionstasks.LambdaInvocationType_REQUEST_RESPONSE,
 		Timeout:        awscdk.Duration_Millis(&taskTimeout),
-		ResultSelector: &map[string]interface{}{
-			"inputType.$": "$.Payload",
-		},
-	})
+	}
+
+	rs := map[string]interface{}{}
+	for _, rsi := range resultSelectors {
+		rs[rsi.Key] = rsi.Value
+	}
+
+	if len(rs) > 0 {
+		props.ResultSelector = &rs
+	}
+
+	return awsstepfunctionstasks.NewLambdaInvoke(stack, lfn.FunctionName(), &props)
 }
