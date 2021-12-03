@@ -3,11 +3,6 @@ honyakutter
 
 This is an application that translates text entered in Japanese into English and tweets it, defined using AWS CDK v2 (golang) and using AWS Step Functions to connect the translation and tweeting processes.
 
-# TODO
-
-- [x] Create a Lambda function to translate Japanese into English.
-- [ ] Create a Step Functions state machine that connects the translation and tweeting Lambda functions.
-
 # Preparation
 
 1. Check your AWS CDK version.
