@@ -80,8 +80,9 @@ This is an application that translates text entered in Japanese into English and
 go test .
 ```
 
-# Manual execution of Lambda functions
-Using AWS CLI. (The latest versions at the time of this writing are `v2.4.4` and `1.22.18`.)
+# Manual execution
+
+Execute Lambda functions and Step Functions state machine manually by using AWS CLI.. (The latest versions at the time of this writing are `v2.4.4` and `1.22.18`.)
 
 ## Translate Lambda Function
 
