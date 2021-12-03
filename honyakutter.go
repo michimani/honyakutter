@@ -18,11 +18,14 @@ func NewHonyakutterStack(scope constructs.Construct, id string, props *Honyakutt
 	}
 	stack := awscdk.NewStack(scope, &id, &sprops)
 
-	// Tweet Lambda Function
-	resources.TweetLambdaFunction(stack)
-
 	// Translate Lambda Function
-	resources.TranslateLambdaFunction(stack)
+	translateFn := resources.TranslateLambdaFunction(stack)
+
+	// Tweet Lambda Function
+	tweetFn := resources.TweetLambdaFunction(stack)
+
+	// StateMaschine
+	resources.TranslateTweetStateMaschine(stack, translateFn, tweetFn)
 
 	return stack
 }

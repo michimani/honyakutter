@@ -88,6 +88,17 @@ go test .
 # Manual execution of Lambda functions
 Using AWS CLI. (The latest versions at the time of this writing are `v2.4.4` and `1.22.18`.)
 
+## Translate Lambda Function
+
+```bash
+aws lambda invoke \
+--function-name translate-function \
+--invocation-type RequestResponse \
+--region ap-northeast-1 \
+--payload fileb://testdata/translate_lambda_payload.json \
+out && cat out
+```
+
 ## Tweet Lambda Function
 
 ```bash
@@ -99,16 +110,25 @@ aws lambda invoke \
 out
 ```
 
-## Translate Lambda Function
+## Start state machine
 
-```bash
-aws lambda invoke \
---function-name translate-function \
---invocation-type RequestResponse \
---region ap-northeast-1 \
---payload fileb://testdata/translate_lambda_payload.json \
-out && cat out
-```
+1. Get state machine ARN
+
+    ```bash
+    STATEMACHINE_ARN=$(
+        aws stepfunctions list-state-machines \
+        --query "stateMachines[?name=='translate-tweet-state-maschine'].stateMachineArn" \
+        --output text
+    ) && echo "${STATEMACHINE_ARN}"
+    ```
+
+2. execute
+
+    ```bash
+    aws stepfunctions start-execution \
+    --state-machine-arn "${STATEMACHINE_ARN=}" \
+    --input file://testdata/statemachine_input.json
+    ```
 
 # Licence
 

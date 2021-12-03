@@ -13,7 +13,7 @@ import (
 )
 
 type TranslateEvent struct {
-	Text       string   `json:"sourceText"`
+	Text       string   `json:"inputText"`
 	SourceLang LangCode `json:"sourceLang"`
 	TargetLang LangCode `json:"targetLang"`
 }
