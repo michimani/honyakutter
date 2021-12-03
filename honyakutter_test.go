@@ -26,7 +26,7 @@ func TestHonyakutterStack_TweetLambdaFunction(t *testing.T) {
 		"Runtime":      "go1.x",
 		"Handler":      "main",
 		"MemorySize":   128,
-		"Timeout":      30,
+		"Timeout":      60,
 		"Environment": map[string]interface{}{
 			"Variables": map[string]string{
 				"GOTWI_API_KEY":             "twitter_api_key_for_test",
@@ -35,5 +35,21 @@ func TestHonyakutterStack_TweetLambdaFunction(t *testing.T) {
 				"GOTWI_ACCESS_TOKEN_SECRET": "twitter_access_token_secret_for_test",
 			},
 		},
+	})
+}
+
+func TestHonyakutterStack_TranslateLambdaFunction(t *testing.T) {
+	app := awscdk.NewApp(nil)
+	stack := NewHonyakutterStack(app, "TestStack", nil)
+	template := assertions.Template_FromStack(stack)
+
+	// Lambda Function
+	template.HasResourceProperties(jsii.String("AWS::Lambda::Function"), map[string]interface{}{
+		"FunctionName": "translate-function",
+		"Description":  "Translate text Japanese into English (default).",
+		"Runtime":      "go1.x",
+		"Handler":      "main",
+		"MemorySize":   128,
+		"Timeout":      60,
 	})
 }
