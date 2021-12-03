@@ -18,7 +18,7 @@ const (
 )
 
 type TweetEvent struct {
-	Text TweetText `json:"tweetText"`
+	Text TweetText `json:"inputText"`
 }
 
 type TweetText string
