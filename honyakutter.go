@@ -21,6 +21,9 @@ func NewHonyakutterStack(scope constructs.Construct, id string, props *Honyakutt
 	// Tweet Lambda Function
 	resources.TweetLambdaFunction(stack)
 
+	// Translate Lambda Function
+	resources.TranslateLambdaFunction(stack)
+
 	return stack
 }
 

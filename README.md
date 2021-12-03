@@ -5,7 +5,7 @@ This is an application that translates text entered in Japanese into English and
 
 # TODO
 
-- [ ] Create a Lambda function to translate Japanese into English.
+- [x] Create a Lambda function to translate Japanese into English.
 - [ ] Create a Step Functions state machine that connects the translation and tweeting Lambda functions.
 
 # Preparation
@@ -44,10 +44,17 @@ This is an application that translates text entered in Japanese into English and
 
 # Build
 
-1. Build Lambda Function (that tweet a text)
+1. Build Tweet Lambda Function
 
     ```bash
     cd resources/lambda_functions/tweet \
+    && GOARCH=amd64 GOOS=linux go build -o bin/main
+    ```
+
+1. Build Translate Lambda Function
+
+    ```bash
+    cd resources/lambda_functions/translate \
     && GOARCH=amd64 GOOS=linux go build -o bin/main
     ```
 
@@ -79,19 +86,29 @@ go test .
 ```
 
 # Manual execution of Lambda functions
+Using AWS CLI. (The latest versions at the time of this writing are `v2.4.4` and `1.22.18`.)
 
-1. Tweet Lambda Function
+## Tweet Lambda Function
 
-    Using AWS CLI. (The latest versions at the time of this writing are `v2.4.4` and `1.22.18`.)
+```bash
+aws lambda invoke \
+--function-name tweet-function \
+--invocation-type Event \
+--region ap-northeast-1 \
+--payload fileb://testdata/tweet_lambda_payload.json \
+out
+```
 
-    ```bash
-    aws lambda invoke \
-    --function-name tweet-function \
-    --invocation-type Event \
-    --region ap-northeast-1 \
-    --payload fileb://testdata/lambda_payload.json \
-    out
-    ```
+## Translate Lambda Function
+
+```bash
+aws lambda invoke \
+--function-name translate-function \
+--invocation-type RequestResponse \
+--region ap-northeast-1 \
+--payload fileb://testdata/translate_lambda_payload.json \
+out && cat out
+```
 
 # Licence
 
