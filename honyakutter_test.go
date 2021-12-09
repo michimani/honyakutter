@@ -21,7 +21,7 @@ func TestHonyakutterStack_TweetLambdaFunction(t *testing.T) {
 
 	// Lambda Function
 	template.HasResourceProperties(jsii.String("AWS::Lambda::Function"), map[string]interface{}{
-		"FunctionName": "tweet-function",
+		"FunctionName": "honyakutter-go-tweet-function",
 		"Description":  "Tweet text with current time.",
 		"Runtime":      "go1.x",
 		"Handler":      "main",
@@ -38,18 +38,14 @@ func TestHonyakutterStack_TweetLambdaFunction(t *testing.T) {
 	})
 }
 
-func TestHonyakutterStack_TranslateLambdaFunction(t *testing.T) {
+func TestHonyakutterStack_TranslateTweetStateMachine(t *testing.T) {
 	app := awscdk.NewApp(nil)
 	stack := NewHonyakutterStack(app, "TestStack", nil)
 	template := assertions.Template_FromStack(stack)
 
 	// Lambda Function
-	template.HasResourceProperties(jsii.String("AWS::Lambda::Function"), map[string]interface{}{
-		"FunctionName": "translate-function",
-		"Description":  "Translate text Japanese into English (default).",
-		"Runtime":      "go1.x",
-		"Handler":      "main",
-		"MemorySize":   128,
-		"Timeout":      60,
+	template.HasResourceProperties(jsii.String("AWS::StepFunctions::StateMachine"), map[string]interface{}{
+		"StateMachineName": "honyakutter-go-translate-tweet-state-machine",
+		"StateMachineType": "EXPRESS",
 	})
 }

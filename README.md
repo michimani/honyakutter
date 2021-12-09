@@ -46,13 +46,6 @@ This is an application that translates text entered in Japanese into English and
     && GOARCH=amd64 GOOS=linux go build -o bin/main
     ```
 
-1. Build Translate Lambda Function
-
-    ```bash
-    cd resources/lambda_functions/translate \
-    && GOARCH=amd64 GOOS=linux go build -o bin/main
-    ```
-
 # Deploying
 
 1. bootstrap 
@@ -60,14 +53,26 @@ This is an application that translates text entered in Japanese into English and
     ```bash
     cdk bootstrap
     ```
-    
-2. Generate CFn template
+
+1. Build Lambda functions
+
+    ```bash
+    make build-tweet
+    ```
+
+1. Load environment values 
+
+    ```bash
+    source .env
+    ```
+
+1. Generate CFn template
 
     ```bash
     cdk synth
     ```
 
-3. deploy
+1. deploy
 
     ```bash
     cdk deploy
@@ -84,22 +89,11 @@ go test .
 
 Execute Lambda functions and Step Functions state machine manually by using AWS CLI.. (The latest versions at the time of this writing are `v2.4.4` and `1.22.18`.)
 
-## Translate Lambda Function
-
-```bash
-aws lambda invoke \
---function-name translate-function \
---invocation-type RequestResponse \
---region ap-northeast-1 \
---payload fileb://testdata/translate_lambda_payload.json \
-out && cat out
-```
-
 ## Tweet Lambda Function
 
 ```bash
 aws lambda invoke \
---function-name tweet-function \
+--function-name honyakutter-go-tweet-function \
 --invocation-type Event \
 --region ap-northeast-1 \
 --payload fileb://testdata/tweet_lambda_payload.json \
@@ -113,7 +107,7 @@ out
     ```bash
     STATEMACHINE_ARN=$(
         aws stepfunctions list-state-machines \
-        --query "stateMachines[?name=='translate-tweet-state-maschine'].stateMachineArn" \
+        --query "stateMachines[?name=='honyakutter-go-translate-tweet-state-machine'].stateMachineArn" \
         --output text
     ) && echo "${STATEMACHINE_ARN}"
     ```
@@ -122,13 +116,13 @@ out
 
     ```bash
     aws stepfunctions start-execution \
-    --state-machine-arn "${STATEMACHINE_ARN=}" \
+    --state-machine-arn "${STATEMACHINE_ARN}" \
     --input file://testdata/statemachine_input.json
     ```
 
 # Licence
 
-[MIT](https://github.com/michimani/gotwi/blob/main/LICENCE)
+[MIT](https://github.com/michimani/honyakutter/blob/main/LICENCE)
 
 # Author
 

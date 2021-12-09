@@ -1,3 +1,5 @@
 {
-  "inputText": "こんにちは。これは Step Functions で繋いだ二つの Lambda 関数を経由して、日本語から英語に翻訳された、テスト用のツイートです。"
+  "sourceLang": "ja",
+  "targetLang": "en",
+  "inputText": "こんにちは。これは Step Functions で AWS SDK Integration と Lambda 関数を経由して、日本語から英語に翻訳された、テスト用のツイートです。"
 }

@@ -1,12 +1,9 @@
-.PHONY: build-translate build-tweet build load-env prepare
-
-build-translate:
-	cd resources/lambda_functions/translate && GOARCH=amd64 GOOS=linux go build -o bin/main
+.PHONY: build-tweet build load-env prepare
 
 build-tweet:
 	cd resources/lambda_functions/tweet && GOARCH=amd64 GOOS=linux go build -o bin/main
 
-build: build-translate build-tweet
+build: build-tweet
 
 load-env:
 	source ".env"
