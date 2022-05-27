@@ -26,3 +26,6 @@ resources/lambda_functions/*/bin
 
 # Lambda Function invoke test
 out
+
+# Go Worckspace
+go.work
