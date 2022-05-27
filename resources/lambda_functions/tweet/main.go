@@ -8,8 +8,8 @@ import (
 
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/michimani/gotwi"
-	"github.com/michimani/gotwi/tweets"
-	"github.com/michimani/gotwi/tweets/types"
+	mt "github.com/michimani/gotwi/tweet/managetweet"
+	"github.com/michimani/gotwi/tweet/managetweet/types"
 )
 
 const (
@@ -46,22 +46,22 @@ func handleRequest(ctx context.Context, event TweetEvent) (string, error) {
 	return tweetID, nil
 }
 
-func newTiwtterClient() (*gotwi.GotwiClient, error) {
-	in := &gotwi.NewGotwiClientInput{
+func newTiwtterClient() (*gotwi.Client, error) {
+	in := &gotwi.NewClientInput{
 		AuthenticationMethod: gotwi.AuthenMethodOAuth1UserContext,
 		OAuthToken:           os.Getenv(OAuthTokenEnvKeyName),
 		OAuthTokenSecret:     os.Getenv(OAuthTokenSecretEnvKeyName),
 	}
 
-	return gotwi.NewGotwiClient(in)
+	return gotwi.NewClient(in)
 }
 
-func tweet(c *gotwi.GotwiClient, text string) (string, error) {
-	p := &types.ManageTweetsPostParams{
+func tweet(c *gotwi.Client, text string) (string, error) {
+	p := &types.CreateInput{
 		Text: gotwi.String(text),
 	}
 
-	res, err := tweets.ManageTweetsPost(context.Background(), c, p)
+	res, err := mt.Create(context.Background(), c, p)
 	if err != nil {
 		return "", err
 	}

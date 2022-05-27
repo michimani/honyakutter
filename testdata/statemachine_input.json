@@ -1,5 +1,5 @@
 {
   "sourceLang": "ja",
   "targetLang": "en",
-  "inputText": "こんにちは。これは Step Functions で AWS SDK Integration と Lambda 関数を経由して、日本語から英語に翻訳された、テスト用のツイートです。"
+  "inputText": "こんにちは。これは Step Functions で AWS SDK Integration と Lambda 関数を経由して、日本語から英語に翻訳された、テスト用のツイートです。これらのリソースは AWS CDK v2 (golang) で構築されています。"
 }
